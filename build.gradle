@@ -1,0 +1,50 @@
+buildscript {
+    ext.kotlinVersion = '1.1.51'
+    ext.gradleVersion = '3.0.0'
+    ext.realmVersion = '3.7.2'
+
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:$gradleVersion"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath "io.realm:realm-gradle-plugin:$realmVersion"
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+ext {
+    androidCompileSdkVersion = 26
+    androidMinSdkVersion = 21
+    androidTargetSdkVersion = ext.androidCompileSdkVersion
+
+    androidVersionCode = 1
+    andoridVersionName = "0.1"
+
+    supportLibraryVersion = '26.1.0'
+    constraintLayoutVersion = '1.0.2'
+    dataBindingCompiler = '3.1.0-alpha01'
+
+    lifecycleRuntime = '1.0.3'
+    lifecycleExtensions = '1.0.0'
+
+    okhttpVersion = '3.9.0'
+    retrofitVersion = '2.3.0'
+    rxJavaAdapter = '1.0.0'
+
+    rxJavaVersion = '2.0.3'
+    rxAndroidVersion = '2.0.1'
+
+    daggerVersion = '2.13'
+}
