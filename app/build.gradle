@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.apollographql.android'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
@@ -12,14 +13,12 @@ android {
         targetSdkVersion androidTargetSdkVersion
         versionCode androidVersionCode
         versionName andoridVersionName
-        multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        buildConfigField "String", "BASE_URL", '"https://jsonplaceholder.typicode.com"'
+        buildConfigField "String", "BASE_URL", '"https://api.githunt.com/graphql/"'
     }
     configurations.all {
         resolutionStrategy {
             eachDependency { details ->
-                // Force all of the primary support libraries to use the same version.
                 if (details.requested.group == 'com.android.support') {
                     details.useVersion supportLibraryVersion
                 }
@@ -52,6 +51,7 @@ dependencies {
     implementation "com.android.support:appcompat-v7:${supportLibraryVersion}"
     implementation "com.android.support:cardview-v7:${supportLibraryVersion}"
     implementation "com.android.support:recyclerview-v7:${supportLibraryVersion}"
+
     //data binding
     kapt "com.android.databinding:compiler:${dataBindingCompiler}"
 

@@ -7,6 +7,10 @@
         <variable
             name="model"
             type="com.androiddagger.presentation.screens.MainViewModel"/>
+
+        <variable
+            name="activity"
+            type="com.androiddagger.presentation.screens.MainActivity"/>
     </data>
 
     <LinearLayout
@@ -25,5 +29,16 @@
             android:layout_height="wrap_content"
             android:onClick="@{model::onClick}"
             android:text="Random action"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{activity::makeGraphQlCall}"
+            android:text="Make GraphQL call"/>
+
+        <FrameLayout
+            android:id="@+id/flRoot"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"/>
     </LinearLayout>
 </layout>
