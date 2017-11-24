@@ -3,7 +3,6 @@ package com.androiddagger.presentation.app
 import android.app.Activity
 import android.app.Application
 import com.androiddagger.data.di.DaggerDataComponent
-import com.androiddagger.presentation.app.di.DaggerAppComponent
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import javax.inject.Inject
@@ -23,12 +22,4 @@ class App : Application(), HasActivityInjector {
                 .inject(this)
     }
 
-//    companion object {
-//        val apolloClient: ApolloClient by lazy {
-//            ApolloClient.builder()
-//                    .serverUrl(BuildConfig.BASE_URL)
-//                    .okHttpClient(OkHttpClient.Builder().build())
-//                    .build()
-//        }
-//    }
 }

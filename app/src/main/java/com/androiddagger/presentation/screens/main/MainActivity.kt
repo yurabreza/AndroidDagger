@@ -1,5 +1,6 @@
-package com.androiddagger.presentation.screens
+package com.androiddagger.presentation.screens.main
 
+import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.os.Bundle
@@ -11,6 +12,7 @@ import com.adnroiddagger.FeedQuery
 import com.adnroiddagger.type.FeedType
 import com.androiddagger.R
 import com.androiddagger.databinding.ActivityMainBinding
+import com.androiddagger.presentation.screens.detail.DetailFragment
 import com.androiddagger.presentation.utils.disableAfterClick
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.ApolloClient
@@ -28,8 +30,10 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     @Inject lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
     @Inject lateinit var graphQlClient: ApolloClient
+    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+
     private lateinit var viewModel: MainViewModel
-    private lateinit var contentView: ActivityMainBinding
+    private lateinit var activityMainBinding: ActivityMainBinding
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = fragmentDispatchingAndroidInjector
 
@@ -45,15 +49,19 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         AndroidInjection.inject(this)
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
-        contentView = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        contentView.activity = this
+        super.onCreate(savedInstanceState)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
+        activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        activityMainBinding.activity = this
     }
 
-    fun makeGraphQlCall(view: View) {
+    fun onButtonClick(view: View) {
         view.disableAfterClick()
+        displayFragment(DetailFragment())
+    }
+
+    private fun makeGraphQlCall() {
         val feedQuery = FeedQuery.builder()
                 .limit(FEED_SIZE)
                 .type(FeedType.HOT)
@@ -62,12 +70,11 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         graphQlClient.query(feedQuery)
                 .responseFetcher(ApolloResponseFetchers.NETWORK_FIRST)
                 .enqueue(callback)
-
     }
 
     private fun displayFragment(fragment: Fragment, addToBackStack: Boolean = false) {
         val ft = supportFragmentManager.beginTransaction()
-        ft.replace(contentView.flRoot.id, fragment, fragment.javaClass.simpleName)
+        ft.replace(activityMainBinding.flRoot.id, fragment, fragment.javaClass.simpleName)
         if (addToBackStack) ft.addToBackStack(null)
         ft.commit()
     }
